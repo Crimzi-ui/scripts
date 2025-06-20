@@ -222,6 +222,28 @@ do
     Input:OnChanged(function()
         print("Input updated:", Input.Value)
     end)
+
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+    local accountAge = "Unknown"
+    local username = "Unknown"
+
+    pcall(function()
+        if LocalPlayer then
+            username = LocalPlayer.Name
+            accountAge = tostring(LocalPlayer.AccountAge) .. " days"
+        end
+    end)
+
+    Tabs.Info:AddParagraph({
+        Title = "Player Info",
+        Content = "Username: " .. username .. "\nAccount Age: " .. accountAge
+    })
+
+    Tabs.Info:AddParagraph({
+        Title = "Executor",
+        Content = "Detected: " .. executorName
+    })
 end
 
 SaveManager:SetLibrary(Fluent)
