@@ -242,6 +242,7 @@ do
         Title = "Player Info",
         Content = "Username: " .. username
     })
+    local Section = Tabs.Info:AddSection("Section Name")
 end
 
 SaveManager:SetLibrary(Fluent)
