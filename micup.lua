@@ -245,7 +245,7 @@ do
 
     Tabs.Info:AddParagraph({
         Title = "Executor",
-        Content = "Detected: " .. executorName
+        Content = "Username: " .. username .. "\nAccount Age: " .. accountAge
     })
 end
 
