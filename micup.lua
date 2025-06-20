@@ -221,21 +221,25 @@ do
         return "Unknown"
     end
 
-
     local executorName = getExecutorName()
-    print("Executor:", executorName)
-
     local Players = game:GetService("Players")
     local LocalPlayer = Players.LocalPlayer
     local accountAge = "Unknown"
     local username = "Unknown"
-    print(Players)
-
     pcall(function()
         if LocalPlayer then
             username = LocalPlayer.Name
             accountAge = tostring(LocalPlayer.AccountAge) .. " days"
         end
+    end)
+
+    local fps = "Unknown"
+    pcall(function()
+        local RunService = game:GetService("RunService")
+
+        RunService.RenderStepped:Connect(function(frametime)
+            fps = 1 / frametime
+        end)
     end)
 
     Tabs.Info:AddParagraph({
@@ -246,6 +250,98 @@ do
     Tabs.Info:AddParagraph({
         Title = "Executor",
         Content = "Detected: " .. executorName
+    })
+
+    Tabs.Info:AddParagraph({
+        Title = "Performance",
+        Content = "FPS: " .. fps
+    })
+
+    task.spawn(function()
+        while true do
+            local paragraph = Tabs.Info:GetParagraphs()[3]
+            if paragraph then
+                paragraph:SetContent("FPS: " .. fps)
+            end
+            task.wait(1)
+        end
+    end)
+end
+
+do -- Player tab
+    local speedSlider = Tabs.Player:AddSlider("Slider", {
+        Title = "Walk Speed",
+        Description = "Change your walk speed",
+        Default = 16,
+        Min = 0,
+        Max = 100,
+        Rounding = 1,
+        Callback = function(Value)
+            local player = game.Players.LocalPlayer
+            if player and player.Character then
+                local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.WalkSpeed = Value
+                end
+            end
+        end
+    })
+
+    local function applyWalkSpeedToCharacter(character)
+        local humanoid = character:WaitForChild("Humanoid", 5)
+        if humanoid then
+            humanoid.WalkSpeed = speedSlider.Value
+        end
+    end
+
+    local player = game.Players.LocalPlayer
+    if player then
+        if player.Character then
+            applyWalkSpeedToCharacter(player.Character)
+        end
+        player.CharacterAdded:Connect(applyWalkSpeedToCharacter)
+    end
+
+    speedSlider:SetValue(16)
+
+    local cframeSpeedSlider = Tabs.Player:AddSlider("CFrameSpeedValue", {
+        Title = "CFrame Speed",
+        Description = "Adjust how fast CFrame speed is",
+        Default = 2,
+        Min = 0,
+        Max = 10,
+        Rounding = 1,
+        Callback = function(Value)
+        end
+    })
+
+    local runningCFrameSpeed = false
+    local cframeConnection
+
+    local cframeToggle = Tabs.Player:AddToggle("CFrameSpeedToggle", {
+        Title = "CFrame WalkSpeed",
+        Description = "Boosts walk speed using CFrame",
+        Default = false,
+        Callback = function(state)
+            runningCFrameSpeed = state
+            if cframeConnection then
+                cframeConnection:Disconnect()
+                cframeConnection = nil
+            end
+            if runningCFrameSpeed then
+                cframeConnection = game:GetService("RunService").RenderStepped:Connect(function()
+                    if not player then return end
+                    local char = player.Character
+                    if char and char:FindFirstChild("HumanoidRootPart") and char:FindFirstChild("Humanoid") then
+                        local hrp = char.HumanoidRootPart
+                        local hum = char.Humanoid
+                        if hum.MoveDirection.Magnitude > 0 then
+                            hrp.CFrame = hrp.CFrame + (hum.MoveDirection.Unit * cframeSpeedSlider.Value)
+                        end
+                    end
+                end)
+            end
+        end
     })
 end
 
