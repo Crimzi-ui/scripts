@@ -240,11 +240,7 @@ do
 
     Tabs.Info:AddParagraph({
         Title = "Player Info",
-        Content = "Username: " .. username
-    })
-    local Section = Tabs.Info:AddSection("Section Name")
-    Section:AddParagraph({
-        Title = "Paragraph"
+        Content = "Username: " .. username .. "\nAccount Age: " .. accountAge
     })
 end
 
