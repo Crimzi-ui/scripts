@@ -239,8 +239,8 @@ do
     end)
 
     Tabs.Info:AddParagraph({
-        Title = "Paragraph",
-        Content = "This is a paragraph.\nSecond line!"
+        Title = "Player Info",
+        Content = "Username: " .. username
     })
 end
 
