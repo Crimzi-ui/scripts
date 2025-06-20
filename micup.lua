@@ -242,7 +242,7 @@ do
 
     Tabs.Info:AddParagraph({
         Title = "Executor",
-        Content = "Detected: " .. executorName
+        Content = "Detecteds: " .. executorName
     })
 end
 
