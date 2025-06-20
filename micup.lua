@@ -243,6 +243,9 @@ do
         Content = "Username: " .. username
     })
     local Section = Tabs.Info:AddSection("Section Name")
+    Section:AddParagraph({
+        Title = "Paragraph"
+    })
 end
 
 SaveManager:SetLibrary(Fluent)
