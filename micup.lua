@@ -242,6 +242,11 @@ do
         Title = "Player Info",
         Content = "Username: " .. username .. "\nAccount Age: " .. accountAge
     })
+
+    Tabs.Info:AddParagraph({
+        Title = "Executor",
+        Content = "Detected: " .. executorName
+    })
 end
 
 SaveManager:SetLibrary(Fluent)
