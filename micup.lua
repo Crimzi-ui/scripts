@@ -5,25 +5,6 @@ if getgenv().Fluent and getgenv().Fluent.Window then
     getgenv().Fluent.Window = nil
 end
 
-local function getExecutorName()
-    if identifyexecutor then
-        local success, result = pcall(identifyexecutor)
-        if success and type(result) == "string" then
-            return result
-        end
-    elseif getexecutorname then
-        local success, result = pcall(getexecutorname)
-        if success and type(result) == "string" then
-            return result
-        end
-    end
-    return "Unknown"
-end
-
-
-local executorName = getExecutorName()
-print("Executor:", executorName)
-
 
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet(
@@ -222,11 +203,33 @@ do
     Input:OnChanged(function()
         print("Input updated:", Input.Value)
     end)
+end
+
+do
+    local function getExecutorName()
+        if identifyexecutor then
+            local success, result = pcall(identifyexecutor)
+            if success and type(result) == "string" then
+                return result
+            end
+        elseif getexecutorname then
+            local success, result = pcall(getexecutorname)
+            if success and type(result) == "string" then
+                return result
+            end
+        end
+        return "Unknown"
+    end
+
+
+    local executorName = getExecutorName()
+    print("Executor:", executorName)
 
     local Players = game:GetService("Players")
     local LocalPlayer = Players.LocalPlayer
     local accountAge = "Unknown"
     local username = "Unknown"
+    print(Players)
 
     pcall(function()
         if LocalPlayer then
@@ -236,13 +239,8 @@ do
     end)
 
     Tabs.Info:AddParagraph({
-        Title = "Player Info",
-        Content = "Username: " .. username .. "\nAccount Age: " .. accountAge
-    })
-
-    Tabs.Info:AddParagraph({
-        Title = "Executor",
-        Content = "Detecteds: " .. executorName
+        Title = "Paragraph",
+        Content = "This is a paragraph.\nSecond line!"
     })
 end
 
