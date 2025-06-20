@@ -1,17 +1,15 @@
-if getgenv().Fluent.Window then
+if getgenv().Fluent and getgenv().Fluent.Window then
     pcall(function()
         getgenv().Fluent.Window:Destroy()
     end)
-    getgenv().FluentWindow = nil
+    getgenv().Fluent.Window = nil
 end
-local test = getgenv().Fluent.Window
-print(test)
 
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet(
-"https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+    "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet(
-"https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+    "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
     Title = "Mic up",
@@ -22,8 +20,6 @@ local Window = Fluent:CreateWindow({
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.LeftControl
 })
-
-getgenv().FluentWindow = Window
 
 local Tabs = {
     Home = Window:AddTab({ Title = "Home", Icon = "" }),
