@@ -6,26 +6,20 @@ if getgenv().Fluent and getgenv().Fluent.Window then
 end
 
 local function getExecutorName()
-    local executors = {
-        { name = "Synapse X",  check = function() return syn and syn.protect_gui end },
-        { name = "ScriptWare", check = function() return getexecutorname and getexecutorname():lower():find("scriptware") end },
-        { name = "Krnl",       check = function() return identifyexecutor and identifyexecutor():lower():find("krnl") end },
-        { name = "Fluxus",     check = function() return isfluxus ~= nil end },
-        { name = "Hydrogen",   check = function() return is_sirhurt_closure and not syn end },
-        { name = "Electron",   check = function() return isElectron ~= nil end },
-        { name = "Arceus X",   check = function() return getidentity and getrenv and iswindowactive == nil end },
-        { name = "Delta",      check = function() return isexecutorclosure and not identifyexecutor end },
-    }
-
-    for _, executor in ipairs(executors) do
-        local success, result = pcall(executor.check)
-        if success and result then
-            return executor.name
+    if identifyexecutor then
+        local success, result = pcall(identifyexecutor)
+        if success and type(result) == "string" then
+            return result
+        end
+    elseif getexecutorname then
+        local success, result = pcall(getexecutorname)
+        if success and type(result) == "string" then
+            return result
         end
     end
-
     return "Unknown"
 end
+
 
 local executorName = getExecutorName()
 print("Executor:", executorName)
